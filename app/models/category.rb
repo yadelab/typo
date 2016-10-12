@@ -33,6 +33,9 @@ class Category < ActiveRecord::Base
   end
   extend Finders
 
+  def initialize(*args)
+    super
+  end
 
   def self.to_prefix
     'category'
@@ -57,9 +60,13 @@ class Category < ActiveRecord::Base
   def display_name
     name
   end
+  
+   def blog
+    @blog ||= Blog.default
+  end
 
   def permalink_url(anchor=nil, only_path=false)
-    blog = Blog.default # remove me...
+    # blog = Blog.default # remove me...
 
     blog.url_for(
       :controller => '/categories',
