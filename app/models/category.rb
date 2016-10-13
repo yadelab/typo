@@ -61,6 +61,10 @@ class Category < ActiveRecord::Base
     name
   end
   
+  def self.find_category_by_name(name)
+    Category.where(name: name).first
+  end
+  
    def blog
     @blog ||= Blog.default
   end
