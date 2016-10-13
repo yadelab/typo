@@ -202,14 +202,3 @@ describe CategoriesController, "SEO Options" do
     response.should_not have_selector(expected)
   end
 end
-
-
-# MORE TESTS
-  
-  # it "Should list all categories"
-  
-  # it "Should display create form"
-  
-  # it "Should display edit form"
-  
-  # it "Should display delete form"

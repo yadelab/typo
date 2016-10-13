@@ -45,25 +45,3 @@ describe Category do
     it { should == 'http://myblog.net/category/software' }
   end
 end
-
-describe Category do
-  it 'Should create category' do
-    params = {
-      :title =>  "solar system",
-      :keywords => "earth, mars, jupiter, pluto",
-      :permalink => "",
-      :description => "lorem ipsum"
-    }
-    a = Category.new(:name => params[:title], :keywords => params[:keywords], :permalink => params[:permalink], :description => params[:description])
-    expect(a.name).to eq(params[:title])
-    expect(a.keywords).to eq(params[:keywords])
-    expect(a.permalink).to eq(params[:permalink])
-    expect(a.description).to eq(params[:description])
-  end
-  
-  it "Should assign articles to category" do
-  end
-  
-  it "Should delete category" do
-  end
-end
