@@ -630,5 +630,33 @@ describe Article do
     end
 
   end
+  
+  #Testing merge
+  describe "merge" do
+    before (:each) do
+      @foo = Article.create!(:title => "Foo", :author => "admin", :body => "lorem")
+      @bar = Article.create!(:title => "Bar", :author => "user", :body => " ipsum")
+    end
+    
+    it "Should merge content" do
+      merged_article = @foo.merge_with(@bar.id)
+      #smoke tests
+      expect(merged_article).not_to be_nil
+      expect(merged_article).to be_an(Article)
+      expect(Article.exists?(@bar)).to be false
+      
+      expect(merged_article.body).to eq("lorem ipsum")
+      expect(merged_article.title).to eq("Foo")
+      expect(merged_article.author).to eq("admin")
+    end
+    
+    it "Should merge comments" do
+      comment_foo =  Comment.create!({:author => "admin", :article => @foo, :body => 'nice post'})
+      comment_bar = Comment.create!(:author => "user", :article => @bar, :body => 'superb!')
+      merged_article = @foo.merge_with(@bar.id)
+      
+      expect(merged_article.comments).to eq([comment_foo, comment_bar])
+    end
+    
+  end
 end
-

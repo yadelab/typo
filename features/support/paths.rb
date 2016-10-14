@@ -15,12 +15,17 @@ module NavigationHelpers
 
     when /^the home\s?page$/
       '/'
+      
     when /^the new article page$/
       '/admin/content/new'
     
     when /^the new categories page$/
       '/admin/categories/new'
       
+    when /^the all articles page$/
+      '/admin/content'
+      
+    #Just categories  
     when /^the edit page for "([^"]*)"$/i
       category = Category.find_category_by_name($1)
       "/admin/categories/edit/#{category.id}"

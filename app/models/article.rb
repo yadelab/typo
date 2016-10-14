@@ -415,6 +415,15 @@ class Article < Content
   def access_by?(user)
     user.admin? || user_id == user.id
   end
+  
+   #merge feature
+  def merge_with(other_article_id)
+    other_article = Article.where(:id => other_article_id).first
+    self[:body] << other_article[:body]
+    self.comments += other_article.comments
+    other_article.destroy
+    self
+  end
 
   protected
 
