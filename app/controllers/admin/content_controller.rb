@@ -169,8 +169,12 @@ class Admin::ContentController < Admin::BaseController
       set_article_author
       save_attachments
       
-      unless @merge_with.nil? or @merge_with.empty? or @merge_with.blank?
+      unless @merge_with.nil? or @merge_with.empty?
+        article = @article
         @article.merge_with(@merge_with)
+        unless @article.blank? or @article.nil?
+          @article = article
+        end
       end
       
       @article.state = "draft" if @article.draft

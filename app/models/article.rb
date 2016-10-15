@@ -416,13 +416,20 @@ class Article < Content
     user.admin? || user_id == user.id
   end
   
-   #merge feature
+  #merge feature
   def merge_with(other_article_id)
-    other_article = Article.where(:id => other_article_id).first
-    self[:body] << other_article[:body]
-    self.comments += other_article.comments
-    self.save
-    other_article.destroy
+    unless self.id == other_article_id
+      other_article = Article.where(:id => other_article_id).first
+      unless other_article.blank?
+        unless other_article == self
+          self[:body] << other_article[:body]
+          self[:body_and_extended] << other_article[:body_and_extended]
+          self.comments += other_article.comments
+          self.save
+          other_article.destroy
+        end
+      end
+    end
     self
   end
 
