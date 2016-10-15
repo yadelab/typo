@@ -22,11 +22,27 @@ class Admin::ContentController < Admin::BaseController
       @article = Article.new(params[:article])
     end
   end
+  
+  # def merge
+  #   if current_user.admin?
+  #     id = params[:id]
+  #     merge_id = params[:merge_with][:merge_id]
+  #     if id == merge_id
+  #       flash[:error] = _("You cannot merge an article with itself")
+  #     elsif Article.exists?(merge_id) && Article.exists?(id)
+  #       article = Article.find(id)
+  #       article.merge_with(merge_id)
+  #       flash[:notice] = _("Articles merged successfully")
+  #     else
+  #       flash[:error] = _("Article not found")
+  #     end
+  #   else
+  #     flash[:error] = _("You cannot perform this action")
+  #   end
+  #   redirect_to :action => index
+  # end
 
   def new
-    if params[:merge_with]
-      @merge_with = params[:merge_with]
-    end
     new_or_edit
   end
 
@@ -52,6 +68,25 @@ class Admin::ContentController < Admin::BaseController
 
     @record.destroy
     flash[:notice] = _("This article was deleted successfully")
+    redirect_to :action => 'index'
+  end
+  
+  def merge
+    if current_user.admin?
+      id = params[:id]
+      merge_id = params[:merge_with][:merge_id]
+      if id == merge_id
+        flash[:error] = _("You cannot merge an article with itself")
+      elsif Article.exists?(merge_id) && Article.exists?(id)
+        record = Article.find(id)
+        record.merge_with(merge_id)
+        flash[:notice] = _("Articles merged successfully")
+      else
+        flash[:error] = _("Article not found")
+      end
+    else
+      flash[:error] = _("Error, you are not allowed to perform this action")
+    end
     redirect_to :action => 'index'
   end
 
@@ -168,14 +203,6 @@ class Admin::ContentController < Admin::BaseController
     if request.post?
       set_article_author
       save_attachments
-      
-      unless @merge_with.nil? or @merge_with.empty?
-        article = @article
-        @article.merge_with(@merge_with)
-        unless @article.blank? or @article.nil?
-          @article = article
-        end
-      end
       
       @article.state = "draft" if @article.draft
 
