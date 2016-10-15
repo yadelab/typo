@@ -685,8 +685,6 @@ describe Admin::ContentController do
       post :edit, 'id' => @foo.id, 'other_article_id' => @bar.id
       #smoke tests
       assert_response :redirect
-      # assigns(:article).should_not be_nil
-      # assigns(:article).should be_valid
       
       foo = @foo.reload
       get :edit, :id => @foo.id
@@ -696,7 +694,7 @@ describe Admin::ContentController do
       #should test for comments
       
      get :edit, :id => @bar.id
-     expect(response.status).to eq(302) #is this correct?
+     expect(response.status).to eq(302)
     end
   end
 end
