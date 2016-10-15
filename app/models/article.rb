@@ -421,6 +421,7 @@ class Article < Content
     other_article = Article.where(:id => other_article_id).first
     self[:body] << other_article[:body]
     self.comments += other_article.comments
+    self.save
     other_article.destroy
     self
   end

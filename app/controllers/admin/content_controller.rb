@@ -24,6 +24,9 @@ class Admin::ContentController < Admin::BaseController
   end
 
   def new
+    if params[:merge_with]
+      @merge_with = params[:merge_with]
+    end
     new_or_edit
   end
 
@@ -165,6 +168,10 @@ class Admin::ContentController < Admin::BaseController
     if request.post?
       set_article_author
       save_attachments
+      
+      unless @merge_with.nil? or @merge_with.empty? or @merge_with.blank?
+        @article.merge_with(@merge_with)
+      end
       
       @article.state = "draft" if @article.draft
 

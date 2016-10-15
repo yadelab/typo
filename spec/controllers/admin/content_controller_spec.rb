@@ -671,4 +671,32 @@ describe Admin::ContentController do
 
     end
   end
+  
+  describe "merge action" do
+    before (:each) do
+      Profile.delete_all
+      @admin = Factory(:user, :profile => Factory(:profile_admin, :label => Profile::ADMIN))
+      @admin.save
+      @foo = Factory(:article, :user => @admin, :title => "foo", :body => "lorem"); @foo.save
+      @bar = Factory(:article, :user => @admin, :title => "bar", :body => " ipsum"); @bar.save
+    end
+    
+    it "Should correctly merge 2 articles" do
+      post :edit, 'id' => @foo.id, 'other_article_id' => @bar.id
+      #smoke tests
+      assert_response :redirect
+      # assigns(:article).should_not be_nil
+      # assigns(:article).should be_valid
+      
+      foo = @foo.reload
+      get :edit, :id => @foo.id
+      # expect(foo.body).to be("lorem ipsum")
+      expect(foo.title).to be(@foo.title)
+      expect(foo.author).to be(@foo.author)
+      #should test for comments
+      
+     get :edit, :id => @bar.id
+     expect(response.status).to eq(302) #is this correct?
+    end
+  end
 end
