@@ -52,6 +52,7 @@ class Admin::ContentController < Admin::BaseController
     redirect_to :action => 'index'
   end
   
+  #merge 2 articles
   def merge
     if current_user.admin?
       id = params[:id]
