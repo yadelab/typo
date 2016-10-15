@@ -57,5 +57,5 @@ class Admin::CategoriesController < Admin::BaseController
     end
     redirect_to :action => 'new'
   end
-
+  
 end

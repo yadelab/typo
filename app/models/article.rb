@@ -418,19 +418,14 @@ class Article < Content
   
   #merge feature
   def merge_with(other_article_id)
-    unless self.id == other_article_id
-      other_article = Article.where(:id => other_article_id).first
-      unless other_article.blank?
-        unless other_article == self
-          self[:body] << other_article[:body]
-          self[:body_and_extended] << other_article[:body_and_extended]
-          self.comments += other_article.comments
-          self.save
-          other_article.destroy
-        end
-      end
+    Article.find(other_article_id).comments.each do |comment|
+      comment.article_id = self.id
+      comment.save
     end
-    self
+    other_article = Article.find(other_article_id)
+    self.body += other_article.body
+    self.save
+    other_article.destroy
   end
 
   protected
