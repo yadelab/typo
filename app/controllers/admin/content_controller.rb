@@ -23,25 +23,6 @@ class Admin::ContentController < Admin::BaseController
     end
   end
   
-  # def merge
-  #   if current_user.admin?
-  #     id = params[:id]
-  #     merge_id = params[:merge_with][:merge_id]
-  #     if id == merge_id
-  #       flash[:error] = _("You cannot merge an article with itself")
-  #     elsif Article.exists?(merge_id) && Article.exists?(id)
-  #       article = Article.find(id)
-  #       article.merge_with(merge_id)
-  #       flash[:notice] = _("Articles merged successfully")
-  #     else
-  #       flash[:error] = _("Article not found")
-  #     end
-  #   else
-  #     flash[:error] = _("You cannot perform this action")
-  #   end
-  #   redirect_to :action => index
-  # end
-
   def new
     new_or_edit
   end
